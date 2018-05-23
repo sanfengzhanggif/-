@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta content="yes" name="apple-mobile-web-app-capable"> 
+    <meta content="yes" name="apple-touch-fullscreen"> 
+    <meta content="telephone=no,email=no" name="format-detection">
+    <title>支付成功</title>
+    <script src="http://g.tbcdn.cn/mtb/lib-flexible/0.3.4/??flexible_css.js,flexible.js" type="text/javascript" charset="utf-8"></script>
+    <style>
+        /*.mask{
+            width: 100%;
+            height: 100%;
+            position: fixed;
+            top: 0;
+            bottom: 0;
+            background: rgba(0,0,0,0.30);
+            z-index: 5;
+            display: none;
+        }*/
+
+        .dialogModel{
+            padding:.346667rem  .346667rem .866667rem .346667rem;
+            border:1px solid #eee;
+            background: #FFFFFF;
+            border-radius: .333333rem .333333rem 0 0;
+            width: 100%;
+            box-sizing: border-box;
+        }
+        .dialogModel .dailogCLose{
+            display: block;
+        }
+        .dialogModel .dailogCLose img{
+            display: block;
+            width: .373333rem;
+            height: .373333rem;
+        }
+        .dialogModel .successImg img{
+            margin-left: auto;
+            margin-right: auto;
+            display: block;
+            width: 2.133333rem;
+            height: 2.133333rem;
+        }
+        .dialogModel .successtips{
+            font-family: PingFangSC-Semibold;
+            color: #333333;
+            text-align: center;
+            padding-top: .4rem;
+            padding-bottom: .533333rem;
+            font-weight: 700;
+        }
+        .dialogModel .warmTip{
+            font-family: PingFangSC-Regular;
+            font-size: 12.6px;
+            color: #999999;
+            letter-spacing: 0.08px;
+            text-align: center;
+            font-size: .373333rem;
+            height: 1.093333rem;
+            line-height: 1.093333rem;
+            width: 100%;
+            background: #FFF2F2;
+            border-radius: 4px;
+            display: flex;
+            align-items: center;
+            margin-bottom: .213333rem;
+        }
+        .dialogModel .warmTip img{
+            width: .453333rem;
+            height: .453333rem;
+            padding-left: .2rem;
+            padding-right: .2rem;
+        }
+        .dialogModel .known .saveBtn{
+            background-image: linear-gradient(-90deg, #03C37D 0%, #85F5EC 100%);
+            border-radius: 5px;
+            border: 0;
+            height:1.2rem;
+            width: 100%;
+            color: #fff;
+            margin-top:1.173333rem;
+            font-family: PingFangSC-Medium;
+            display: block;
+            text-align: center;
+            line-height: 1.2rem;
+            opacity: 0.5;
+            font-size: .4rem;
+        }
+        .dialogModel ul.payImformation li{
+            border-bottom: 1px solid rgba(233,236,239,0.70);
+            font-size: .373333rem;
+            font-family: PingFangSC-Regular;
+            height: 1.333333rem;
+            line-height: 1.333333rem;
+            width: 100%;
+            position: relative;
+        }
+        .dialogModel ul.payImformation li label{
+            color: #666666;
+            letter-spacing: 0.19px;
+            padding-right: .4rem;
+        }
+        .dialogModel ul.payImformation li input{
+            font-size: .373333rem;
+            color: #151515;
+            border: none;
+            outline: none;
+            width:calc(100% - 2.1rem);
+            height:1.233333rem ;
+            -webkit-appearance: none !important;
+            margin: 0;
+            font-weight: 700;
+        }
+        .dialogModel ul.payImformation li img{
+            display: none;
+            width:.586667rem;
+            width:.586667rem;
+            position: absolute;
+            top: 30%;
+            right: .56rem;
+        }
+        input::-webkit-input-placeholder{
+            color: #999;
+            font-size: .373333rem;
+            font-family: PingFangSC-Regular;
+            font-weight: 300;
+        }
+        #surname,#theNmae{
+            text-transform: capitalize;
+        }
+    </style>
+</head>
+	<body>
+<!--         <div class="mask"></div> -->
+        <div class="dialogModel">
+            <ul class="fz14 payImformation">
+                <li>
+                    <label  for="inpName">姓&nbsp;&nbsp;&nbsp;名</label>
+                    <input  id='inpName'class="inp" type="text"  value="" oninput="highLightBtn()" required="required" placeholder='你的名字'/>
+                    <img src="http://image.zhihuishu.com/zhs/able-commons/demo/201805/6aca1575a4394b4c951467dd05fe515f.png" alt="" class="del">
+                </li>
+                <li>
+                    <label  for="surname">拼音姓</label>
+                    <input  id='surname'class="inp" type="text"  required="required"placeholder='如为江小白填写为"Jiang"' oninput="highLightBtn()"/>
+                    <img src="http://image.zhihuishu.com/zhs/able-commons/demo/201805/6aca1575a4394b4c951467dd05fe515f.png" alt="" class="del">
+                </li>
+                <li>
+                    <label for="theNmae">拼音名</label>
+                    <input id="theNmae" class="inp" type="text" required="required" placeholder='如为张小白填写为"Xiao Bai"' oninput="highLightBtn()"/>   
+                    <img src="http://image.zhihuishu.com/zhs/able-commons/demo/201805/6aca1575a4394b4c951467dd05fe515f.png" alt="" class="del">
+                </li>
+            </ul>
+            <a class="known" href="#">
+                <button class="saveBtn" disabled >我已确认</button>
+            </a>
+        </div>
+    <script src="http://assets.zhihuishu.com/jquery/1.8.3/jquery.min.js"></script>
+    <script type="text/javascript" src="browser.js"></script>
+    <script type="text/javascript" src="app.js"></script>
+    <script>
+        certificateBuyResultBlock();        
+        //弹框事件
+        // 点击隐藏消失
+        $(".knownBtn").on("click",function(){
+            $(".mask").css("display","none");
+            $(".dialogModel").fadeOut();
+            $(this).attr("href","#toGoods");
+        })
+        //input框的焦点事件
+        $(".inp").focus(function(){
+            $(this).next('img').show();        
+        }).blur(function(){   
+            var _this = $(this);
+            setTimeout(function(){
+                _this.next('img').hide();
+            }, 10);
+            if(_this.attr("id") == "inpTele"){            
+                if(_this.val().trim().length != 11){
+                    $(".form-ipt-error").show();
+                    setTimeout(function(){
+                        $(".form-ipt-error").fadeOut();
+                    },2000);
+                }            
+            }   
+        });
+        //点击清除input框内内容
+        $(".del").click(function(){
+            $(this).prev().val("");
+            $(this).hide();
+            $(".saveBtn").css("opacity", 0.5);
+            $(".saveBtn").attr("disabled", true);
+        });       
+        //监听input框的值变化
+        function highLightBtn(){
+            if($("#inpName").val().trim() != "" && $("#surname").val().trim() != "" && $("#theNmae").val().trim() != "" ){
+                $(".saveBtn").css("opacity", 0.9);
+                $(".saveBtn").attr("disabled", false);
+            }
+            if($("#inpName").val().trim() == "" && $("#surname").val().trim() == "" || $("#theNmae").val().trim() == "" ){
+                $(".saveBtn").css("opacity", 0.5);
+                $(".saveBtn").attr("disabled", true);
+            }
+        }
+        // 加载的时候显示弹窗
+        function certificateBuyResultBlock(){
+            $("body").css("overflow","hidden");
+            $(".mask").css("display","block");
+            $(".dialogModel").slideDown();
+            $(".saveBtn").on("click",function(){
+                $("body").css("overflow","auto");
+                $(".mask").css("display","none");
+                $(".dialogModel").fadeOut();     
+            });
+        }
+    </script>
+	</body>
+</html>
