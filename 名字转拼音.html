@@ -8,7 +8,19 @@
     <title>支付成功</title>
     <script src="http://g.tbcdn.cn/mtb/lib-flexible/0.3.4/??flexible_css.js,flexible.js" type="text/javascript" charset="utf-8"></script>
     <style>
-        /*.mask{
+       /* html{
+            width: 100%;
+            height: 100%;    
+        }
+        body{    
+            height: 100%;
+            overflow: hidden;
+        }*/
+        .fl{float:left;display:inline;}
+        .fr{float:right;display:inline;}
+        .clearfix:after{clear:both;content:".";display:block;font-size:0;height:0;line-height:0;visibility:hidden}
+        .clearfix{clear:both;zoom:1}
+        .mask{
             width: 100%;
             height: 100%;
             position: fixed;
@@ -17,8 +29,52 @@
             background: rgba(0,0,0,0.30);
             z-index: 5;
             display: none;
-        }*/
-
+        }
+        .confirmImformation{
+            position: absolute;
+            top: 17%;
+            left: 50%;
+            transform: translate(-50%,50%);
+            width: 8.56rem;
+            height:4.026667rem;
+            background: #FFFFFF;
+            border-radius: .32rem;
+            display: none;
+            z-index: 77;
+            font-family: PingFangSC-Regular;
+        }
+        .confirmImformation .confirmTip{
+            width: 100%;
+            height: 2.826667rem;
+            text-align: center;
+            font-size: .426667rem;
+            color: #333333;
+            letter-spacing: 0;
+            text-align: center;
+            line-height: 2.826667rem;    
+        }
+        .confirmImformation .cancel{    
+            font-size: .4rem;
+            color: #999999;
+            width: 50%;
+            border: none;
+            outline: none;
+            height: 1.2rem;
+            border-radius: 0 0 0 .32rem;
+            border: .013333rem solid  #DADADA;
+            background: #fff;
+        } 
+        .confirmImformation .makeSure{  
+            background-image: linear-gradient(-90deg, #66A1FF 0%, #47EBCA 100%);
+            font-size: .426667rem;
+            color: #FFFFFF;
+            text-align: center;
+            width: 50%;
+            border: none;
+            outline: none;
+            height: 1.2rem;
+            border-radius: 0 0 .32rem 0;
+        } 
         .dialogModel{
             padding:.346667rem  .346667rem .866667rem .346667rem;
             border:1px solid #eee;
@@ -132,7 +188,16 @@
     </style>
 </head>
 	<body>
-<!--         <div class="mask"></div> -->
+        <div class="mask"></div>
+        <div class="confirmContainer" >
+            <div class="confirmImformation">
+                <div class="confirmTip">填写的信息还未保存，确认现在返回吗？</div>
+                <div class="clearfix selectBtn">
+                    <button class="cancel fl">取消</button>
+                    <button class="makeSure fl">确定</button>
+                </div>
+            </div>        
+        </div>
         <div class="dialogModel">
             <ul class="fz14 payImformation">
                 <li>
@@ -159,7 +224,7 @@
     <script type="text/javascript" src="browser.js"></script>
     <script type="text/javascript" src="app.js"></script>
     <script>
-        certificateBuyResultBlock();        
+        // certificateBuyResultBlock();        
         //弹框事件
         // 点击隐藏消失
         $(".knownBtn").on("click",function(){
@@ -203,16 +268,59 @@
             }
         }
         // 加载的时候显示弹窗
-        function certificateBuyResultBlock(){
-            $("body").css("overflow","hidden");
-            $(".mask").css("display","block");
-            $(".dialogModel").slideDown();
-            $(".saveBtn").on("click",function(){
-                $("body").css("overflow","auto");
-                $(".mask").css("display","none");
-                $(".dialogModel").fadeOut();     
-            });
+        // function certificateBuyResultBlock(){
+        //     $("body").css("overflow","hidden");
+        //     $(".mask").css("display","block");
+        //     $(".dialogModel").slideDown();
+        //     $(".saveBtn").on("click",function(){
+        //         $("body").css("overflow","auto");
+        //         $(".mask").css("display","none");
+        //         $(".dialogModel").fadeOut();     
+        //     });
+        // }
+
+
+         //监听浏览器返回事件
+        var listenerBackHandler = {     
+            param: {          
+                isRun:false,//防止微信返回立即执行popstate事件  
+            },      
+            listenerBack:function(){
+                var state = {              
+                    title:"title",              
+                    url:"#"
+                };           
+                window.history.pushState(state,"title","#");                 
+                window.addEventListener("popstate",function(e){       
+                    if(listenerBackHandler.param.isRun) {                     
+                        $(".confirmImformation").show();
+                        $(".mask").show(); 
+                        $(".cancel").click(function(){
+                            $(".mask").hide(); 
+                            $(".confirmImformation").hide();           
+                        });
+                        $(".makeSure").click(function(){
+                            // history.back()
+                                // window.location.href = "confirmOrder.html";
+                            $(".mask").hide(); 
+                            $(".confirmImformation").hide(); 
+                        })
+                    }                       
+                },false);      
+            },
+            //初始化返回事件  
+            initBack:function(){
+                window.addEventListener('pageshow',function(){
+                    listenerBackHandler.param.isRun =false;              
+                    setTimeout(function(){
+                        listenerBackHandler.param.isRun =true; 
+                    },1000);//延迟1秒 防止微信返回立即执行popstate事件  
+                        listenerBackHandler.listenerBack();          
+                });      
+            }  
         }
+
+        listenerBackHandler.initBack();
     </script>
 	</body>
 </html>
